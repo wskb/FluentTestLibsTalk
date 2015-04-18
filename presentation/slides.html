@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Fluent test assertion libraries</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<style type="text/css">
+		@import url(http://fonts.googleapis.com/css?family=Raleway:600);
+		@import url(http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic);
+		@import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Lora'; }
+      h1, h2, h3 {
+        font-family: 'Raleway';
+        font-weight: 600;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .start {
+      }
+      
+      pre code.no-highlight {
+        display: block;
+        padding: 0.5em;
+        background: #f0f0f0;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+layout: true
+name: section
+class: center, middle
+---
+name: start
+
+# Fluent test assertion libraries
+
+Warren Blanchet, April 2015
+
+---
+
+# Why test assertions?
+
+---
+layout: false
+
+# Why test assertions?
+
+```java
+	@Test
+	public void example() {
+		String data = getData();
+		if( data.startsWith("hello") ) {
+			throw new AssertionError();
+		}
+	}
+```
+
+---
+
+# Why test assertions?
+
+* clarify code
+
+--
+
+```java
+	@Test
+	public void clarifiedExample() {
+		String data = getData();
+		assertTrue(data.startsWith("hello"));
+	}
+```
+--
+
+```no-highlight
+Error: java.lang.NullPointerException
+```
+
+---
+
+# Why test assertions?
+
+* clarify code
+* distinguish between error and failure
+
+--
+
+```java
+	@Test
+	public void distinguishedExample() {
+		String data = getData();
+		assertNotNull(data);
+		assertTrue(data.startsWith("hello"));
+	}
+```
+
+```no-highlight
+Failure: java.lang.AssertionError
+```
+
+---
+
+# Making it better
+
+```java
+	@Test
+	public void informativeExample() {
+		String data = getData();
+		assertNotNull("data must not be null", data);
+		assertTrue(data.startsWith("hello"));
+	}
+```
+
+```no-highlight
+Failure: java.lang.AssertionError: data must not be null
+```
+
+---
+template: section
+
+# Enter Fluent Test Assertion Libraries
+
+---
+
+# Fluent family tree
+
+* Hamcrest Matchers
+
+  *generic matching library, not just for testing*
+  
+	* FEST Assertions
+	
+	  *inactive*
+	
+		* AssertJ
+		
+		  *active fork of FEST*
+		
+		* Truth
+		
+		  *inspired by FEST*
+
+---
+
+# Hamcrest
+
+```java
+	@Test
+	public void hamcrestExample() {
+		String data = getData();
+		assertThat(data, startsWith("hello"));
+	}
+```
+
+```no-highlight
+java.lang.AssertionError: 
+Expected: a string starting with "hello"
+     but: was null
+```
+
+---
+
+# New style
+
+```java
+	@Test
+	public void truthExample() {
+		String data = getData();
+		assertThat(data).startsWith("hello");
+	}
+```
+
+```no-highlight
+java.lang.AssertionError: Not true that null reference starts with <"hello">
+```
+
+---
+
+# The difference
+
+--
+
+![Completion!](completion.png)
+
+---
+
+# How it works
+
+```java
+import static org.assertj.core.api.Assertions.*;
+```
+
+* single point of entry
+	* automatic if set up as favourite in Eclipse
+* type of actual value determines overloaded method and return type
+* return type has the relevant assertions
+
+---
+template: section
+
+# Demo
+
+---
+
+# Choosing
+
+* AssertJ
+    * extraction (from collections)
+    * equals
+    * assertion projects
+        * Swing
+        * Neo4J
+        * Android testing (from Square)
+	
+* Truth
+    * has `ASSUME.that()` equivalent to `assertThat()`
+	* annotation processors/compiler assertion subproject
+	
+---
+
+# Customizing
+
+* AssertJ
+    * Create per-type assertion classes
+    * Create your own `MyAssertions` class that contains `assertThat` methods for your types
+    * Generator exists
+* Truth
+
+    * Create per-type subject classes
+
+    * introduce per test: 
+      ```java
+        assertAbout(FOO).that(new Foo(5)).matches(new Foo(2 + 3))
+      ```
+
+---
+template: section
+
+# Questions
+
+    </textarea>
+    <!-- https://gnab.github.io/remark/downloads/remark-latest.min.js -->
+    <script src="remark-latest.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
