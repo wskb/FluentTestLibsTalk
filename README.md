@@ -7,6 +7,11 @@ Overview
 This repository contains material used during a presentation delivered at 
 [EJUG](https://groups.google.com/forum/#!forum/ejug) on April 20, 2015.
 
+Slides
+------
+
+The slides are available [on the github pages site](http://wskb.github.io/FluentTestLibsTalk/slides.html)
+
 Blurb
 -----
 
